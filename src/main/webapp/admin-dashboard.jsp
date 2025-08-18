@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
@@ -130,7 +129,7 @@
   <!-- Main Content Area -->
   <main class="p-6">
     <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
       <div class="bg-white p-6 rounded-lg shadow">
         <div class="flex items-center">
           <div class="p-3 rounded-full bg-indigo-100 text-indigo-600">
@@ -160,21 +159,6 @@
           <span class="text-green-500 text-sm font-medium">+8% from last month</span>
         </div>
       </div>
-
-      <div class="bg-white p-6 rounded-lg shadow">
-        <div class="flex items-center">
-          <div class="p-3 rounded-full bg-blue-100 text-blue-600">
-            <i class="fas fa-shopping-cart text-xl"></i>
-          </div>
-          <div class="ml-4">
-            <p class="text-sm font-medium text-gray-500">Monthly Sales</p>
-            <p class="text-2xl font-semibold text-gray-800">$24,560</p>
-          </div>
-        </div>
-        <div class="mt-4">
-          <span class="text-green-500 text-sm font-medium">+15% from last month</span>
-        </div>
-      </div>
     </div>
 
     <div class="mt-10 bg-white p-6 rounded-lg shadow">
@@ -201,8 +185,6 @@
               </div>
               <span>${customer.name}</span>
             </td>
-
-
             <td class="px-4 py-2">${customer.email}</td>
             <td class="px-4 py-2">${customer.phone}</td>
             <td class="px-4 py-2">${customer.country}</td>
@@ -211,8 +193,6 @@
         </tbody>
       </table>
     </div>
-
-
 
     <div class="mt-6 bg-white p-6 rounded-lg shadow">
       <h2 class="text-lg font-semibold text-gray-800 mb-4">Recent Books</h2>
@@ -238,8 +218,6 @@
               </div>
               <span>${book.title}</span>
             </td>
-
-
             <td class="px-4 py-2">${book.author}</td>
             <td class="px-4 py-2">${book.isbn}</td>
             <td class="px-4 py-2">${book.category}</td>
@@ -248,20 +226,8 @@
         </tbody>
       </table>
     </div>
-
-    <!-- Billing Info Chart -->
-<%--    <div class="bg-white rounded-lg shadow overflow-hidden">--%>
-<%--      <div class="px-6 py-4 border-b border-gray-200 bg-blue-600 text-white">--%>
-<%--        <h3 class="text-lg font-medium">Monthly Sales</h3>--%>
-<%--      </div>--%>
-<%--      <div class="p-6">--%>
-<%--        <canvas id="billingChart" height="100"></canvas>--%>
-<%--      </div>--%>
-<%--    </div>--%>
-<%--  </main>--%>
-<%--</div>--%>
-
-
+  </main>
+</div>
 
 <!-- Scripts -->
 <script>
