@@ -91,11 +91,11 @@ public class AddBookServlet extends HttpServlet {
             request.getSession().setAttribute("message", new Message("Database error: " + e.getMessage(), "error"));
         }
 
-        // Redirect back to book page
+    
         response.sendRedirect("BookServlet");
     }
 
-    // Helper method to get file name from part
+
     private String getFileName(Part part) {
         String contentDisposition = part.getHeader("content-disposition");
         String[] items = contentDisposition.split(";");
