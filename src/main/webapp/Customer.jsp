@@ -576,6 +576,126 @@
             reader.readAsDataURL(file);
         }
     }
+    // Search functionality
+    document.querySelector('input[type="text"][placeholder="Search customers..."]').addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const rows = document.querySelectorAll('tbody tr');
+
+        rows.forEach(row => {
+            const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const email = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            const phone = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+            const address = row.querySelector('td:nth-child(5)').textContent.toLowerCase();
+
+            if (name.includes(searchTerm) || email.includes(searchTerm) ||
+                phone.includes(searchTerm) || address.includes(searchTerm)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+
+    // Filter functionality
+    function applyCustomerFilter(filterType, value = '') {
+        const rows = document.querySelectorAll('tbody tr');
+
+        rows.forEach(row => {
+            let shouldShow = true;
+
+            switch(filterType) {
+                case 'all':
+                    // Show all rows
+                    break;
+                case 'active':
+                    const statusText = row.querySelector('td:nth-child(6)').textContent.toLowerCase();
+                    shouldShow = statusText.includes('active');
+                    break;
+                case 'inactive':
+                    const inactiveStatusText = row.querySelector('td:nth-child(6)').textContent.toLowerCase();
+                    shouldShow = inactiveStatusText.includes('inactive');
+                    break;
+                case 'location':
+                    const addressText = row.querySelector('td:nth-child(5)').textContent.toLowerCase();
+                    shouldShow = addressText.includes(value.toLowerCase());
+                    break;
+            }
+
+            row.style.display = shouldShow ? '' : 'none';
+        });
+    }
+
+    // Set up filter dropdown actions
+    document.querySelectorAll('#filter-dropdown a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const filterType = this.textContent.trim().toLowerCase();
+
+            if (filterType === 'all customers') {
+                applyCustomerFilter('all');
+            } else if (filterType === 'active') {
+                applyCustomerFilter('active');
+            } else if (filterType === 'inactive') {
+                applyCustomerFilter('inactive');
+            } else if (filterType === 'by location') {
+                // For location filter, you might want to show another dropdown with locations
+                // For simplicity, we'll just filter by the first location found
+                const firstLocation = document.querySelector('td:nth-child(5)').textContent;
+                applyCustomerFilter('location', firstLocation);
+            }
+
+            // Close the dropdown after selection
+            document.getElementById('filter-dropdown').classList.add('hidden');
+        });
+    });
+
+    // Enhanced location filter (optional)
+    // You can add this to create a more sophisticated location filter
+    function setupLocationFilter() {
+        const locations = new Set();
+        document.querySelectorAll('td:nth-child(5)').forEach(td => {
+            const location = td.textContent.trim();
+            if (location) {
+                locations.add(location);
+            }
+        });
+
+        const locationDropdown = document.createElement('div');
+        locationDropdown.className = 'py-1';
+        locationDropdown.id = 'location-filter';
+
+        locations.forEach(location => {
+            const link = document.createElement('a');
+            link.href = '#';
+            link.className = 'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100';
+            link.textContent = location;
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                applyCustomerFilter('location', location);
+            });
+            locationDropdown.appendChild(link);
+        });
+
+        // Replace the "By Location" link with the actual locations
+        const byLocationLink = document.querySelector('#filter-dropdown a:last-child');
+        byLocationLink.textContent = 'By Location ▼';
+        byLocationLink.addEventListener('mouseenter', function() {
+            document.getElementById('location-filter').classList.toggle('hidden', false);
+        });
+
+        document.getElementById('filter-dropdown').appendChild(locationDropdown);
+        document.getElementById('location-filter').classList.add('hidden');
+    }
+
+    // Initialize the enhanced location filter (optional)
+    // setupLocationFilter();
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('#filter-btn') && !event.target.closest('#filter-dropdown')) {
+            document.getElementById('filter-dropdown').classList.add('hidden');
+        }
+    });
 </script>
 </body>
 </html>

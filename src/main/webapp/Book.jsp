@@ -623,6 +623,121 @@
               alert('Error loading book data');
             });
   }
+  // Search functionality
+  document.querySelector('input[type="text"][placeholder="Search books..."]').addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    const rows = document.querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+      const title = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+      const author = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+      const category = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+
+      if (title.includes(searchTerm) || author.includes(searchTerm) || category.includes(searchTerm)) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  });
+
+  // Filter functionality
+  function applyFilter(filterType, value = '') {
+    const rows = document.querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+      let shouldShow = true;
+
+      switch(filterType) {
+        case 'all':
+          // Show all rows
+          break;
+        case 'inStock':
+          const stockText = row.querySelector('td:nth-child(6)').textContent.toLowerCase();
+          shouldShow = stockText.includes('in stock');
+          break;
+        case 'outOfStock':
+          const outOfStockText = row.querySelector('td:nth-child(6)').textContent.toLowerCase();
+          shouldShow = outOfStockText.includes('out of stock');
+          break;
+        case 'category':
+          const categoryText = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+          shouldShow = categoryText.includes(value.toLowerCase());
+          break;
+      }
+
+      row.style.display = shouldShow ? '' : 'none';
+    });
+  }
+
+  // Set up filter dropdown actions
+  document.querySelectorAll('#filter-dropdown a').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const filterType = this.textContent.trim().toLowerCase();
+
+      if (filterType === 'all books') {
+        applyFilter('all');
+      } else if (filterType === 'in stock') {
+        applyFilter('inStock');
+      } else if (filterType === 'out of stock') {
+        applyFilter('outOfStock');
+      } else if (filterType === 'by category') {
+        // For category filter, you might want to show another dropdown with categories
+        // For simplicity, we'll just filter by the first category found
+        const firstCategory = document.querySelector('td:nth-child(4)').textContent;
+        applyFilter('category', firstCategory);
+      }
+
+      // Close the dropdown after selection
+      document.getElementById('filter-dropdown').classList.add('hidden');
+    });
+  });
+
+  // Enhanced category filter (optional)
+  // You can add this to create a more sophisticated category filter
+  function setupCategoryFilter() {
+    const categories = new Set();
+    document.querySelectorAll('td:nth-child(4)').forEach(td => {
+      categories.add(td.textContent.trim());
+    });
+
+    const categoryDropdown = document.createElement('div');
+    categoryDropdown.className = 'py-1';
+    categoryDropdown.id = 'category-filter';
+
+    categories.forEach(category => {
+      const link = document.createElement('a');
+      link.href = '#';
+      link.className = 'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100';
+      link.textContent = category;
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        applyFilter('category', category);
+      });
+      categoryDropdown.appendChild(link);
+    });
+
+    // Replace the "By Category" link with the actual categories
+    const byCategoryLink = document.querySelector('#filter-dropdown a:last-child');
+    byCategoryLink.textContent = 'By Category ▼';
+    byCategoryLink.addEventListener('mouseenter', function() {
+      document.getElementById('category-filter').classList.toggle('hidden', false);
+    });
+
+    document.getElementById('filter-dropdown').appendChild(categoryDropdown);
+    document.getElementById('category-filter').classList.add('hidden');
+  }
+
+  // Initialize the enhanced category filter (optional)
+  // setupCategoryFilter();
+
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', function(event) {
+    if (!event.target.closest('#filter-btn') && !event.target.closest('#filter-dropdown')) {
+      document.getElementById('filter-dropdown').classList.add('hidden');
+    }
+  });
 </script>
 </body>
 </html>
