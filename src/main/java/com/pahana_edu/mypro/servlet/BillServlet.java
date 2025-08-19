@@ -4,7 +4,7 @@ import com.pahana_edu.mypro.DAO.BillDAO;
 import com.pahana_edu.mypro.model.Bill;
 import com.pahana_edu.mypro.model.BillItem;
 import com.pahana_edu.mypro.util.DBConnection;
-
+      
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,7 +32,7 @@ public class BillServlet extends HttpServlet {
         try {
             Connection connection = DBConnection.getInstance().getConnection();
             BillDAO billDAO = new BillDAO(connection);
-
+  
             // Get filter parameters
             String paymentStatus = request.getParameter("paymentStatus");
             String paymentMethod = request.getParameter("paymentMethod");
