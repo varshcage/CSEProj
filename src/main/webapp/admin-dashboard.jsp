@@ -236,7 +236,44 @@
     document.querySelector('.fixed.inset-y-0.left-0').classList.toggle('-translate-x-full');
   });
 
-  // Initialize chart
+  // Search functionality for customers table
+  document.querySelector('input[type="text"][placeholder="Search..."]').addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    const customerRows = document.querySelectorAll('.bg-white:nth-of-type(1) tbody tr');
+    const bookRows = document.querySelectorAll('.bg-white:nth-of-type(2) tbody tr');
+
+    // Search in customers table
+    customerRows.forEach(row => {
+      const name = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+      const email = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+      const phone = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+      const country = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+
+      if (name.includes(searchTerm) || email.includes(searchTerm) ||
+              phone.includes(searchTerm) || country.includes(searchTerm)) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+
+    // Search in books table
+    bookRows.forEach(row => {
+      const title = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+      const author = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+      const isbn = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+      const category = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+
+      if (title.includes(searchTerm) || author.includes(searchTerm) ||
+              isbn.includes(searchTerm) || category.includes(searchTerm)) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  });
+
+  // Initialize charts
   const bookLabels = [<c:forEach var="e" items="${booksPerDay}" varStatus="s">${s.index > 0 ? ',' : '' }'${e.key}'</c:forEach>];
   const bookData = [<c:forEach var="e" items="${booksPerDay}" varStatus="s">${s.index > 0 ? ',' : '' }${e.value}</c:forEach>];
 
@@ -244,40 +281,44 @@
   const customerData = [<c:forEach var="e" items="${customersPerDay}" varStatus="s">${s.index > 0 ? ',' : '' }${e.value}</c:forEach>];
 
   const booksCtx = document.getElementById('booksChart').getContext('2d');
-  new Chart(booksCtx, {
-    type: 'bar',
-    data: {
-      labels: bookLabels,
-      datasets: [{
-        label: 'Books Added',
-        data: bookData,
-        backgroundColor: 'rgba(99, 102, 241, 0.6)',
-        borderColor: 'rgba(99, 102, 241, 1)',
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: { y: { beginAtZero: true } }
-    }
-  });
+  if (booksCtx) {
+    new Chart(booksCtx, {
+      type: 'bar',
+      data: {
+        labels: bookLabels,
+        datasets: [{
+          label: 'Books Added',
+          data: bookData,
+          backgroundColor: 'rgba(99, 102, 241, 0.6)',
+          borderColor: 'rgba(99, 102, 241, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  }
 
   const customersCtx = document.getElementById('customersChart').getContext('2d');
-  new Chart(customersCtx, {
-    type: 'bar',
-    data: {
-      labels: customerLabels,
-      datasets: [{
-        label: 'Customers Added',
-        data: customerData,
-        backgroundColor: 'rgba(16, 185, 129, 0.6)',
-        borderColor: 'rgba(16, 185, 129, 1)',
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: { y: { beginAtZero: true } }
-    }
-  });
+  if (customersCtx) {
+    new Chart(customersCtx, {
+      type: 'bar',
+      data: {
+        labels: customerLabels,
+        datasets: [{
+          label: 'Customers Added',
+          data: customerData,
+          backgroundColor: 'rgba(16, 185, 129, 0.6)',
+          borderColor: 'rgba(16, 185, 129, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  }
 </script>
 </body>
 </html>
