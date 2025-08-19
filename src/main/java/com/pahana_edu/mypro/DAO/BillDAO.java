@@ -13,7 +13,7 @@ public class BillDAO {
 
     public BillDAO(Connection connection) {
         this.connection = connection;
-    }
+    } 
 
     // Generate bill number
     private String generateBillNumber() throws SQLException {
