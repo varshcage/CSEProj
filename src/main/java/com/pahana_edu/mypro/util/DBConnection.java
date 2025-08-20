@@ -8,7 +8,7 @@ public class DBConnection {
     private static DBConnection instance;
     private Connection connection;
 
-    private DBConnection() throws SQLException {
+    private DBConnection() throws SQLException {   
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             this.connection = DriverManager.getConnection(
